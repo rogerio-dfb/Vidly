@@ -20,7 +20,7 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int id)
         {
-            var movie = GetMovies().FirstOrDefault(m => m.Id == id);
+            var movie = GetMovies().SingleOrDefault(m => m.Id == id);
 
             if (movie == null)
                 return HttpNotFound();
