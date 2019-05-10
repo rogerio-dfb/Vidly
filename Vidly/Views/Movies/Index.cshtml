@@ -5,6 +5,9 @@
 }
 
 <h2>Movies</h2>
+<p>
+    @Html.ActionLink("New Movie", "New", null, new { @class = "btn btn-primary  " })
+</p>
 
 @{ 
     var movies = Model.ToList();
@@ -28,7 +31,7 @@ else
         {
             <tr>
                 <td>
-                    @Html.ActionLink(movie.Name, "Details", new { id = movie.Id})
+                    @Html.ActionLink(movie.Name, "Edit", new { id = movie.Id})
                 </td>
                 <td>@movie.Genre.Name</td>
             </tr>
