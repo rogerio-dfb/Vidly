@@ -10,6 +10,7 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+    [System.Runtime.InteropServices.Guid("8937644B-DA24-49A6-B366-5F2B13CAF2AB")]
     public class MoviesController : Controller
     {
 
@@ -48,7 +49,7 @@ namespace Vidly.Controllers
             var genres = _context.Genres.ToList();
 
             var viewModel = new MovieFormViewModel()
-            {
+            { 
                 Genres = genres
             };
 
@@ -62,9 +63,8 @@ namespace Vidly.Controllers
             if (movie == null)
                 return HttpNotFound();
 
-            var viewModel = new MovieFormViewModel()
+            var viewModel = new MovieFormViewModel(movie)
             {
-                Movie = movie,
                 Genres = _context.Genres.ToList()
             };
 
@@ -72,8 +72,19 @@ namespace Vidly.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
+            if (!ModelState.IsValid)
+            {
+                var viewmodel = new MovieFormViewModel(movie)
+                {
+                    Genres = _context.Genres.ToList()
+                };
+
+                return View("MovieForm", viewmodel);
+            }
+
             if (movie.Id == 0)
             {
                 movie.DateAdded = DateTime.Now;
